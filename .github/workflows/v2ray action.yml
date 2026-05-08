@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - name: 检出仓库代码
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: 获取并覆盖内容
         run: |
@@ -33,6 +33,6 @@ jobs:
           if git diff --staged --quiet; then
             echo "内容无变化，跳过更新。"
           else
-            git commit -m "自动更新 v2ray.txt: $(date)"
+            git commit -m "防失联v2ray订阅更新-$(date)"
             git push
           fi
