@@ -124,7 +124,7 @@ profile:
 proxy-providers:
   利群防失联1:
     type: http
-    url: "https://cdn.jsdelivr.net/gh/peasoft/NoMoreWalls@master/list.meta.yml"
+    url: "https://ghfast.top/https://raw.githubusercontent.com/free18/v2ray/refs/heads/main/c.yaml"
     interval: 10800
     path: "./proxy_provider/fangshilian1.yaml"
     proxy: DIRECT
@@ -135,18 +135,6 @@ proxy-providers:
       additional-prefix: "[利群防失联]"
       skip-cert-verify: false
 
-  利群防失联2:
-    type: http
-    url: "https://codeberg.org/Jsnzkpg/Jsnzkpg/raw/branch/Jsnzkpg/Jsnzkpg"
-    interval: 10800
-    path: "./proxy_provider/fangshilian2.yaml"
-    proxy: DIRECT
-    header:
-      User-Agent: 
-        - clash.meta
-    override:
-      additional-prefix: "[利群防失联]"
-      skip-cert-verify: false
    
 proxy-groups:
   - name: 🥳打包代理
