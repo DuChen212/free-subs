@@ -24,6 +24,8 @@ jobs:
           echo "文件已抓取完成"
 
       - name: 提交并推送更改
+        env:
+          TZ: Asia/Shanghai
         run: |
           git config --local user.email "Lancelot@liqun.com"
           git config --local user.name "Lancelot"
