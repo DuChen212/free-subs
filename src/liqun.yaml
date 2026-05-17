@@ -122,19 +122,19 @@ profile:
   store-fake-ip: true
 
 proxy-providers:
-  利群公益:
+  liqun:
     type: http
-    url: "https://share-main0c1m2.lancelot.dpdns.org/sub?token=f5c07418dd296a82c5d8c3f47545befb&clash"
+    url: "https://ghfast.top/https://raw.githubusercontent.com/free18/v2ray/refs/heads/main/c.yaml"
     interval: 10800
-    path: ./proxy_provider/sub1.yaml
+    path: ./proxy_provider/liqun.yaml
     proxy: DIRECT
     header:
       User-Agent: 
         - clash.meta
     override:
-      additional-prefix: "[利群公益]"
+      additional-prefix: "[liqun]"
       skip-cert-verify: false
-                                 
+                  
 proxy-groups:
   - name: 🥳打包代理
     type: select
@@ -305,12 +305,8 @@ rule-providers:
     interval: 86400
 
 rules:
-  - AND,((DST-PORT,443),(NETWORK,UDP),(NOT,((RULE-SET,cnip))),(NOT,((RULE-SET,cn)))),⚠️拒绝连接 
   - RULE-SET,category-ads-all,⚠️拒绝连接
   - DOMAIN-SUFFIX,jsdelivr.net,🎯全球直连  
-  - DOMAIN-SUFFIX,lancelot.indevs.in,🎯全球直连
-  - DOMAIN-SUFFIX,19882008.xyz,🎯全球直连 
-  - DOMAIN-SUFFIX,dpdns.org,🎯全球直连   
   - RULE-SET,telegram,🥳打包代理   
   - RULE-SET,google,🥳打包代理  
   - RULE-SET,github,🥳打包代理  
