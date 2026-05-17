@@ -111,7 +111,7 @@ sniffer:
 geodata-mode: true
 geo-auto-update: true
 geo-update-interval: 24
-geodata-loader: memconservative
+geodata-loader: standard
 geox-url:
   geoip: "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geoip.dat"
   geosite: "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geosite.dat"
