@@ -3,6 +3,10 @@
 
 欢迎来到 **利群便利店**。本项目致力于通过 Cloudflare 边缘计算技术，为广大网友提供稳定、高速且永久免费的公益网络订阅服务。  
 
+<p align="center">
+  <img src="https://count.getloli.com/get/@LancelotRar.free-subs?theme=rule34" alt="Visitors">
+</p>
+
 > [!IMPORTANT]
 >无论你是从哪里、从谁的教程知道了 Cloudflare（以下简称 CF），知道了 CF 上可以免费搭建科学上网项目，你都应该知道项目作者是谁，项目名字是什么。 
 >
