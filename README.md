@@ -4,7 +4,7 @@
 欢迎来到 **利群便利店**。本项目致力于通过 Cloudflare 边缘计算技术，为广大网友提供稳定、高速且永久免费的公益网络订阅服务。  
 
 <p align="center">
-  <img src="https://count.getloli.com/get/@LancelotRar.free-subs?theme=rule34" alt="Visitors">
+  <img src="https://count.getloli.com/@:LancelotRar?name=%3ALancelotRar&theme=booru-koe&padding=7&offset=0&align=top&scale=1&pixelated=1&darkmode=auto">
 </p>
 
 > [!IMPORTANT]
