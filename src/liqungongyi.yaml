@@ -124,7 +124,7 @@ profile:
 proxy-providers:
   利群公益:
     type: http
-    url: "https://share-main0c1m2.lancelot.dpdns.org/sub?token=f5c07418dd296a82c5d8c3f47545befb&clash"
+    url: "https://share-main0c1m2.lancelot.dpdns.org/sub?token=7ef5a41a5ebf167cf5d28b4d3489b046&clash"
     interval: 86400
     path: ./proxy_provider/liqungongyi.yaml
     proxy: DIRECT
