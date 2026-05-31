@@ -61,7 +61,7 @@
 * Singbox订阅    
 
 **获取方式：（防止Github爬虫）**  
-* 加入 [TG交流群](https://t.me/liqunchat) ，回复“订阅”，即可获取最新订阅地址。
+* 加入 [TG交流群](https://t.me/liqunchat01) ，回复“订阅”，即可获取最新订阅地址。
 
 > [!TIP]  
 >### 其中Clash订阅分流规则已手搓至v8版本
