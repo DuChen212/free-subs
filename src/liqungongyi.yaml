@@ -55,8 +55,6 @@ dns:
     - "+.invalid"
     - "+.localhost"
     - "+.test"
-    - "+.local"
-    - "+.lan"
     - "+.zte.home"
     - "+.my.router"
     - "+.ts.net"
