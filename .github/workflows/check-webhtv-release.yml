@@ -62,10 +62,15 @@ jobs:
 
           # --- Build message ---
           raw_body = (data.get("body") or "")[:1500]
-          raw_body = re.sub(r'^###\s+', '', raw_body, flags=re.MULTILINE)
+          raw_body = re.sub(r'^\s*###+\s*', '', raw_body, flags=re.MULTILINE)
           raw_body = re.sub(r'\n{3,}', '\n\n', raw_body)
           raw_body = raw_body.strip()
           body = escape(raw_body)
+          body = re.sub(
+              r'https?://[^\s<]+',
+              lambda m: f'<a href="{m.group(0)}">{m.group(0)}</a>',
+              body,
+          )
           rel_name = escape(data.get("name") or data["tag_name"])
           date = data["published_at"][:10]
           rel_url = data["html_url"]
