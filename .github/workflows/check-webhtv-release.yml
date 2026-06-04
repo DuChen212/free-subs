@@ -4,28 +4,45 @@ on:
   schedule:
     - cron: '0 */6 * * *'
   workflow_dispatch:
+    inputs:
+      force:
+        description: Force re-notify even if already notified
+        type: boolean
+        default: false
+
+permissions: {}
+
+concurrency:
+  group: webhtv-release
+  cancel-in-progress: false
 
 jobs:
   check:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      REPO: fish2018/webhtv
     steps:
-      - uses: actions/checkout@v6.0.3
-
       - name: Cache last release ID
         id: cache
         uses: actions/cache@v5.0.5
         with:
           path: last_release_id.txt
           key: webhtv-release-id
+          restore-keys: webhtv-release-id-
 
       - name: Check and notify
         env:
           TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
           TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
+          FORCE: ${{ inputs.force || '' }}
         run: |
           cat > /tmp/check_release.py << 'PYEOF'
           import json, os, re, urllib.request, sys
           from html import escape
+
+          REPO = os.environ["REPO"]
+          FORCE = os.environ.get("FORCE", "").lower() == "true"
 
           # --- Read last known release ID ---
           last_id = 0
@@ -36,8 +53,9 @@ jobs:
               pass
 
           # --- Fetch latest release from GitHub ---
+          url = f"https://api.github.com/repos/{REPO}/releases/latest"
           req = urllib.request.Request(
-              "https://api.github.com/repos/fish2018/webhtv/releases/latest",
+              url,
               headers={"User-Agent": "GitHub-Actions", "Accept": "application/vnd.github+json"},
           )
           try:
@@ -50,7 +68,7 @@ jobs:
           latest_id = data["id"]
           print(f"Last ID: {last_id}, Latest ID: {latest_id}")
 
-          if latest_id <= last_id:
+          if not FORCE and latest_id <= last_id:
               print("No new release")
               sys.exit(0)
 
@@ -62,15 +80,16 @@ jobs:
 
           # --- Build message ---
           raw_body = (data.get("body") or "")[:1500]
-          raw_body = re.sub(r'^\s*###+\s*', '', raw_body, flags=re.MULTILINE)
-          raw_body = re.sub(r'\n{3,}', '\n\n', raw_body)
+          raw_body = re.sub(r"^\s*###+\s*", "", raw_body, flags=re.MULTILINE)
+          raw_body = re.sub(r"\n{3,}", "\n\n", raw_body)
           raw_body = raw_body.strip()
           body = escape(raw_body)
           body = re.sub(
-              r'https?://[^\s<]+',
+              r"https?://[^\s<]+",
               lambda m: f'<a href="{m.group(0)}">{m.group(0)}</a>',
               body,
           )
+
           rel_name = escape(data.get("name") or data["tag_name"])
           date = data["published_at"][:10]
           rel_url = data["html_url"]
