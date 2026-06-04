@@ -23,52 +23,91 @@ jobs:
           TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
           TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
         run: |
-          LAST_ID=$(cat last_release_id.txt 2>/dev/null || echo "0")
-          RESP=$(curl -sf https://api.github.com/repos/fish2018/webhtv/releases/latest) || {
-            echo "::error::Failed to fetch GitHub release API"
-            exit 1
-          }
-          LATEST_ID=$(echo "$RESP" | jq -r '.id')
-          echo "Last ID: $LAST_ID, Latest ID: $LATEST_ID"
+          cat > /tmp/check_release.py << 'PYEOF'
+          import json, os, urllib.request, sys
+          from html import escape
 
-          if [ "$LATEST_ID" -le "$LAST_ID" ] 2>/dev/null; then
-            echo "No new release"
-            exit 0
-          fi
+          # --- Read last known release ID ---
+          last_id = 0
+          try:
+              with open("last_release_id.txt") as f:
+                  last_id = int(f.read().strip())
+          except Exception:
+              pass
 
-          echo "New release found: $LATEST_ID"
-          echo "$LATEST_ID" > last_release_id.txt
+          # --- Fetch latest release from GitHub ---
+          req = urllib.request.Request(
+              "https://api.github.com/repos/fish2018/webhtv/releases/latest",
+              headers={"User-Agent": "GitHub-Actions", "Accept": "application/vnd.github+json"},
+          )
+          try:
+              with urllib.request.urlopen(req) as resp:
+                  data = json.loads(resp.read())
+          except Exception as e:
+              print(f"::error::Failed to fetch GitHub release: {e}")
+              sys.exit(1)
 
-          PAYLOAD=$(echo "$RESP" | jq --arg chat_id "$TG_CHAT_ID" '
-            {
-              chat_id: $chat_id,
-              parse_mode: "HTML",
-              disable_web_page_preview: true,
-              text: ("🚀 <b>WebHTV 新版本发布！</b>\n\n"
-                + "<b>版本：</b>" + (.name // .tag_name) + "\n"
-                + "<b>发布时间：</b>" + (.published_at[0:10]) + "\n\n"
-                + "📝 <b>更新内容：</b>\n"
-                + (.body // "" | .[0:1500]
-                  | gsub("&"; "&amp;")
-                  | gsub("<"; "&lt;")
-                  | gsub(">"; "&gt;")
-                ) + "\n\n"
-                + "📦 <b>下载 Assets：</b>\n"
-                + ([.assets[]
-                  | "• <a href=\"" + .browser_download_url + "\">" + .name + "</a> ("
-                    + ((.size / 1048576 * 10 | round / 10) | tostring) + " MB)"
-                ] | join("\n")) + "\n\n"
-                + "🔗 <a href=\"" + .html_url + "\">查看完整 Release</a>"
+          latest_id = data["id"]
+          print(f"Last ID: {last_id}, Latest ID: {latest_id}")
+
+          if latest_id <= last_id:
+              print("No new release")
+              sys.exit(0)
+
+          print("New release found, sending notification…")
+
+          # --- Persist new ID ---
+          with open("last_release_id.txt", "w") as f:
+              f.write(str(latest_id))
+
+          # --- Build message ---
+          body = escape((data.get("body") or "")[:1500])
+          rel_name = escape(data.get("name") or data["tag_name"])
+          date = data["published_at"][:10]
+          rel_url = data["html_url"]
+
+          assets_lines = []
+          for a in data.get("assets", []):
+              size_mb = round(a["size"] / 1_048_576, 1)
+              name = escape(a["name"])
+              assets_lines.append(
+                  f'• <a href="{a["browser_download_url"]}">{name}</a> ({size_mb} MB)'
               )
-            }
-          ')
+          assets_text = "\n".join(assets_lines)
 
-          RESP=$(curl -s -X POST "https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage" \
-            -H "Content-Type: application/json" \
-            -d "$PAYLOAD")
-          if echo "$RESP" | jq -e '.ok' > /dev/null 2>&1; then
-            echo "Telegram notification sent successfully"
-          else
-            echo "::error::Telegram API error: $(echo "$RESP" | jq -r '.description')"
-            exit 1
-          fi
+          text = (
+              f"🚀 <b>WebHTV 新版本发布！</b>\n\n"
+              f"<b>版本：</b>{rel_name}\n"
+              f"<b>发布时间：</b>{date}\n\n"
+              f"📝 <b>更新内容：</b>\n{body}\n\n"
+              f"📦 <b>下载 Assets：</b>\n{assets_text}\n\n"
+              f'🔗 <a href="{rel_url}">查看完整 Release</a>'
+          )
+
+          # --- Send to Telegram ---
+          payload = json.dumps({
+              "chat_id": os.environ["TG_CHAT_ID"],
+              "parse_mode": "HTML",
+              "disable_web_page_preview": True,
+              "text": text,
+          }).encode()
+
+          req2 = urllib.request.Request(
+              f'https://api.telegram.org/bot{os.environ["TG_BOT_TOKEN"]}/sendMessage',
+              data=payload,
+              headers={"Content-Type": "application/json"},
+          )
+          try:
+              with urllib.request.urlopen(req2) as resp:
+                  result = json.loads(resp.read())
+              if result.get("ok"):
+                  print("Telegram notification sent successfully")
+              else:
+                  print(f'::error::Telegram error: {result.get("description")}')
+                  sys.exit(1)
+          except Exception as e:
+              print(f"::error::Failed to send Telegram message: {e}")
+              sys.exit(1)
+          PYEOF
+
+          python3 /tmp/check_release.py
