@@ -85,16 +85,19 @@ jobs:
               f.write(str(latest_id))
 
           # --- Build message ---
-          raw_body = (data.get("body") or "")[:1500]
-          raw_body = re.sub(r"^\s*###+\s*", "", raw_body, flags=re.MULTILINE)
-          raw_body = re.sub(r"\n{3,}", "\n\n", raw_body)
-          raw_body = raw_body.strip()
-          body = escape(raw_body)
-          body = re.sub(
-              r"https?://[^\s<]+",
-              lambda m: f'<a href="{m.group(0)}">{m.group(0)}</a>',
-              body,
-          )
+          raw_body = (data.get("body") or "").strip()[:1500]
+          if raw_body:
+              raw_body = re.sub(r"^\s*###+\s*", "", raw_body, flags=re.MULTILINE)
+              raw_body = re.sub(r"\n{3,}", "\n\n", raw_body)
+              raw_body = raw_body.strip()
+              body = escape(raw_body)
+              body = re.sub(
+                  r"https?://[^\s<]+",
+                  lambda m: f'<a href="{m.group(0)}">{m.group(0)}</a>',
+                  body,
+              )
+          else:
+              body = "无"
 
           rel_name = escape(data.get("name") or data["tag_name"])
           date = data["published_at"][:10]
@@ -110,7 +113,7 @@ jobs:
           assets_text = "\n".join(assets_lines)
 
           text = (
-              f"🚀 <b>WebHTV 新版本发布！</b>\n\n"
+              f"🚀 <b>不懂佬WebHTV 新版本发布！</b>\n\n"
               f"TG讨论群：<a href=\"https://t.me/Silent1566Group\">https://t.me/Silent1566Group</a>\n\n"
               f"<b>版本：</b>{rel_name}\n"
               f"<b>发布时间：</b>{date}\n\n"
