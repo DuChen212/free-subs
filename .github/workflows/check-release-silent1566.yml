@@ -38,7 +38,7 @@ jobs:
           FORCE: ${{ inputs.force || '' }}
         run: |
           cat > /tmp/check_release.py << 'PYEOF'
-          import json, os, re, urllib.request, sys
+          import json, os, re, urllib.error, urllib.request, sys
           from html import escape
 
           REPO = os.environ["REPO"]
@@ -61,6 +61,12 @@ jobs:
           try:
               with urllib.request.urlopen(req) as resp:
                   data = json.loads(resp.read())
+          except urllib.error.HTTPError as e:
+              if e.code == 404:
+                  print("No releases yet — exiting normally")
+                  sys.exit(0)
+              print(f"::error::Failed to fetch GitHub release: {e}")
+              sys.exit(1)
           except Exception as e:
               print(f"::error::Failed to fetch GitHub release: {e}")
               sys.exit(1)
@@ -105,7 +111,7 @@ jobs:
 
           text = (
               f"🚀 <b>WebHTV 新版本发布！</b>\n\n"
-              f"TG讨论群：<a href=\"https://t.me/webhtv\">https://t.me/webhtv</a>\n\n"
+              f"TG讨论群：<a href=\"https://t.me/Silent1566Group\">https://t.me/Silent1566Group</a>\n\n"
               f"<b>版本：</b>{rel_name}\n"
               f"<b>发布时间：</b>{date}\n\n"
               f"📝 <b>更新内容：</b>\n{body}\n\n"
