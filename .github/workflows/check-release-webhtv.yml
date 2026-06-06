@@ -124,9 +124,8 @@ jobs:
               f"TG讨论群：<a href=\"https://t.me/webhtv\">https://t.me/webhtv</a>\n\n"
               f"<b>版本：</b>{rel_name}\n"
               f"<b>发布时间：</b>{date}\n\n"
-              f"📝 <b>更新内容：</b>\n{body}\n\n"
-              f"📦 <b>下载 Assets：</b>\n{assets_text}\n\n"
               f'🔗 <a href="{rel_url}">查看完整 Release</a>'
+              f"📦 <b>下载 Assets：</b>\n{assets_text}\n\n"              
           )
 
           # --- Send to Telegram ---
