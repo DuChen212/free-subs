@@ -120,12 +120,12 @@ jobs:
           assets_text = "\n".join(assets_lines)
 
           text = (
-              f"🚀 <b>鱼佬WebHTV 新版本发布！</b>\n\n"
-              f"TG讨论群：<a href=\"https://t.me/webhtv\">https://t.me/webhtv</a>\n\n"
-              f"<b>版本：</b>{rel_name}\n"
-              f"<b>发布时间：</b>{date}\n\n"
-              f'🔗 <a href="{rel_url}">查看完整 Release</a>\n\n'
-              f"📦 <b>下载 Assets：</b>\n{assets_text}"              
+              f"🚀<b>鱼佬WebHTV 新版本发布！</b>\n\n"
+              f"📢<a href=\"https://t.me/webhtv\">TG讨论群</a>\n\n"
+              f"🌀<b>版本：</b>{rel_name}\n"
+              f"🍾<b>发布时间：</b>{date}\n"
+              f'🔗<a href="{rel_url}">查看完整 Release</a>\n\n'
+              f"📦<b>下载 Assets：</b>\n{assets_text}"              
           )
 
           # --- Send to Telegram ---
