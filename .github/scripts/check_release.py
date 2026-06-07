@@ -6,6 +6,7 @@ import urllib.request
 from html import escape
 
 REPO = os.environ["REPO"]
+DATA_FILE = os.environ["DATA_FILE"]
 NOTIFY_TITLE = os.environ["NOTIFY_TITLE"]
 NOTIFY_GROUP_URL = os.environ["NOTIFY_GROUP_URL"]
 FORCE = os.environ.get("FORCE", "").lower() == "true"
@@ -18,7 +19,7 @@ for var in ("TG_BOT_TOKEN", "TG_CHAT_ID"):
 
 last_id = 0
 try:
-    with open("last_release_id.txt") as f:
+    with open(DATA_FILE) as f:
         last_id = int(f.read().strip())
 except Exception:
     pass
@@ -101,6 +102,6 @@ except Exception as e:
     print(f"::error::Failed to send Telegram message: {e}")
     sys.exit(1)
 
-with open("last_release_id.txt", "w") as f:
+with open(DATA_FILE, "w") as f:
     f.write(str(latest_id))
 print(f"Telegram notification sent and release ID persisted: {latest_id}")

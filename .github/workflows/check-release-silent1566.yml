@@ -11,7 +11,7 @@ on:
         default: false
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: webhtv-silent1566-release
@@ -23,20 +23,11 @@ jobs:
     timeout-minutes: 10
     env:
       REPO: Silent1566/webhtv
-      CACHE_KEY: webhtv-silent1566-release-id
+      DATA_FILE: .github/data/last-release-silent1566.txt
       NOTIFY_TITLE: 不懂佬WebHTV
       NOTIFY_GROUP_URL: https://t.me/Silent1566Group
     steps:
-      - uses: actions/checkout@v6
-
-      - name: Restore last release ID
-        id: cache
-        uses: actions/cache/restore@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
-        with:
-          path: last_release_id.txt
-          key: ${{ env.CACHE_KEY }}-${{ github.run_number }}
-          restore-keys: |
-            ${{ env.CACHE_KEY }}-
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       - name: Check and notify
         env:
@@ -46,9 +37,11 @@ jobs:
           FORCE: ${{ inputs.force || '' }}
         run: python3 .github/scripts/check_release.py
 
-      - name: Save cache
-        if: always()
-        uses: actions/cache/save@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
-        with:
-          path: last_release_id.txt
-          key: ${{ env.CACHE_KEY }}-${{ github.run_number }}
+      - name: Persist release ID
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add "${{ env.DATA_FILE }}"
+          git diff --cached --quiet && echo "No changes to commit" && exit 0
+          git commit -m "update last release ID [skip ci]"
+          git push
