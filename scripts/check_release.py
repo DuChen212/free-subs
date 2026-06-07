@@ -1,6 +1,5 @@
 import json
 import os
-import re
 import sys
 import urllib.error
 import urllib.request
@@ -30,7 +29,7 @@ api_headers = {
 if GITHUB_TOKEN:
     api_headers["Authorization"] = f"Bearer {GITHUB_TOKEN}"
 
-url = f"https://api.github.com/repos/{REPO}/releases"
+url = f"https://api.github.com/repos/{REPO}/releases?per_page=1"
 req = urllib.request.Request(url, headers=api_headers)
 try:
     with urllib.request.urlopen(req) as resp:
@@ -66,7 +65,7 @@ for a in data.get("assets", []):
     size_mb = round(a["size"] / 1_048_576, 1)
     name = escape(a["name"])
     assets_lines.append(
-        f'&bull; <a href="{a["browser_download_url"]}">{name}</a> ({size_mb} MB)'
+        f'• <a href="{a["browser_download_url"]}">{name}</a> ({size_mb} MB)'
     )
 assets_text = "\n".join(assets_lines) if assets_lines else "（无 Assets）"
 
