@@ -29,8 +29,9 @@ jobs:
         uses: actions/cache/restore@v5.0.5
         with:
           path: last_release_id.txt
-          key: ${{ env.CACHE_KEY }}
-          restore-keys: ${{ env.CACHE_KEY }}-
+          key: ${{ env.CACHE_KEY }}-${{ github.run_number }}
+          restore-keys: |
+            ${{ env.CACHE_KEY }}-
 
       - name: Check and notify
         env:
@@ -184,4 +185,4 @@ jobs:
         uses: actions/cache/save@v5.0.5
         with:
           path: last_release_id.txt
-          key: ${{ env.CACHE_KEY }}
+          key: ${{ env.CACHE_KEY }}-${{ github.run_number }}
