@@ -6,8 +6,9 @@ import urllib.request
 from html import escape
 
 REPO = os.environ["REPO"]
+NOTIFY_TITLE = os.environ["NOTIFY_TITLE"]
+NOTIFY_GROUP_URL = os.environ["NOTIFY_GROUP_URL"]
 FORCE = os.environ.get("FORCE", "").lower() == "true"
-
 GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN", "")
 
 for var in ("TG_BOT_TOKEN", "TG_CHAT_ID"):
@@ -70,8 +71,8 @@ for a in data.get("assets", []):
 assets_text = "\n".join(assets_lines) if assets_lines else "（无 Assets）"
 
 text = (
-    f"🚀<b>不懂佬WebHTV 新版本发布！</b>\n\n"
-    f"📢<a href=\"https://t.me/Silent1566Group\">TG讨论群</a>\n\n"
+    f"🚀<b>{NOTIFY_TITLE} 新版本发布！</b>\n\n"
+    f'📢<a href="{NOTIFY_GROUP_URL}">TG讨论群</a>\n\n'
     f"🌀<b>版本：</b>{rel_name}\n"
     f"🍾<b>发布时间：</b>{pub_date}\n"
     f'🔗<a href="{rel_url}">查看完整 Release</a>\n\n'
