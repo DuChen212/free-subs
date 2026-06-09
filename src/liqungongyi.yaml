@@ -78,9 +78,8 @@ dns:
     - https://dns.alidns.com/dns-query
     - https://doh.pub/dns-query
   fallback:
-    - https://1.1.1.1/dns-query
-    - https://8.8.8.8/dns-query
-    - tls://8.8.4.4
+    - https://dns.google/dns-query
+    - https://cloudflare-dns.com/dns-query
   proxy-server-nameserver:
     - https://dns.alidns.com/dns-query
     - https://doh.pub/dns-query
