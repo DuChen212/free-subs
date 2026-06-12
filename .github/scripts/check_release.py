@@ -80,26 +80,37 @@ text = (
     f"📦<b>下载 Assets：</b>\n{assets_text}"
 )
 
-payload = json.dumps({
-    "chat_id": os.environ["TG_CHAT_ID"],
-    "parse_mode": "HTML",
-    "disable_web_page_preview": True,
-    "text": text,
-}).encode()
+chat_ids = [c.strip() for c in os.environ["TG_CHAT_ID"].split(",") if c.strip()]
+if not chat_ids:
+    print("::error::TG_CHAT_ID is empty after splitting")
+    sys.exit(1)
 
-req2 = urllib.request.Request(
-    f'https://api.telegram.org/bot{os.environ["TG_BOT_TOKEN"]}/sendMessage',
-    data=payload,
-    headers={"Content-Type": "application/json"},
-)
-try:
-    with urllib.request.urlopen(req2) as resp:
-        result = json.loads(resp.read())
-    if not result.get("ok"):
-        print(f'::error::Telegram error: {result.get("description")}')
-        sys.exit(1)
-except Exception as e:
-    print(f"::error::Failed to send Telegram message: {e}")
+send_ok = False
+for chat_id in chat_ids:
+    payload = json.dumps({
+        "chat_id": chat_id,
+        "parse_mode": "HTML",
+        "disable_web_page_preview": True,
+        "text": text,
+    }).encode()
+    req2 = urllib.request.Request(
+        f'https://api.telegram.org/bot{os.environ["TG_BOT_TOKEN"]}/sendMessage',
+        data=payload,
+        headers={"Content-Type": "application/json"},
+    )
+    try:
+        with urllib.request.urlopen(req2) as resp:
+            result = json.loads(resp.read())
+        if not result.get("ok"):
+            print(f'::error::Telegram error (chat {chat_id}): {result.get("description")}')
+        else:
+            print(f"Message sent to chat {chat_id}")
+            send_ok = True
+    except Exception as e:
+        print(f"::error::Failed to send Telegram message to {chat_id}: {e}")
+
+if not send_ok:
+    print("::error::Failed to send message to all chat IDs")
     sys.exit(1)
 
 with open(DATA_FILE, "w") as f:
