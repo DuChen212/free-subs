@@ -22,7 +22,6 @@ tun:
   dns-hijack:
   - any:53
   mtu: 1500
-  route-exclude-address: []
   stack: gvisor
   strict-route: false
 
@@ -61,9 +60,6 @@ dns:
     - 8.8.8.8
     - https://dns.alidns.com/dns-query
     - https://doh.pub/dns-query
-  fallback: [] 
-  nameserver-policy: {}
-  direct-nameserver: []
   direct-nameserver-follow-policy: false
   proxy-server-nameserver:
   - https://doh.pub/dns-query
