@@ -115,7 +115,7 @@ proxy-providers:
         - clash.meta
     override:
       additional-prefix: "[利群公益1]"
-      skip-cert-verify: false
+
   zrf公益:
     type: http
     url: "https://ghfast.top/https://raw.githubusercontent.com/shaoyouvip/free/main/all.yaml"
@@ -126,8 +126,7 @@ proxy-providers:
       User-Agent: 
         - clash.meta
     override:
-      additional-prefix: "[zrf公益]"
-      skip-cert-verify: false      
+      additional-prefix: "[zrf公益]"   
 
   利群公益2:
     type: http
@@ -139,8 +138,7 @@ proxy-providers:
       User-Agent: 
         - clash.meta
     override:
-      additional-prefix: "[利群公益2]"
-      skip-cert-verify: false            
+      additional-prefix: "[利群公益2]"      
              
   利群公益3:
     type: http
@@ -153,7 +151,6 @@ proxy-providers:
         - clash.meta
     override:
       additional-prefix: "[利群公益3]"
-      skip-cert-verify: false  
 
 proxy-groups:
   - name: 🥳打包代理
