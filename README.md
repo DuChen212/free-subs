@@ -70,21 +70,21 @@
 >规则链条严格遵循“**去广告 ➔ 常用域名精准分流 ➔ 国内外 IP 补漏 ➔ 最终>兜底**”的逻辑。
 >
 >* 在请求发起的第一时间拦截广告，省去不必要的域名解析与流量损耗。
->* 将 Google、GitHub、Telegram、Microsoft 等高频海外生产力工具前置，>确保日常开发与沟通秒级响应。
+>* 将 Google、GitHub、Telegram、Microsoft 等高频海外生产力工具前置，确保日常开发与沟通秒级响应。
 >
 >### 2. 严谨的 `no-resolve` 设计，杜绝 DNS 泄漏
 >
->我们在所有的 IP 规则（如 `cnip`、`telegramip` 等）中均启用了 `,>no-resolve` 标记。
+>我们在所有的 IP 规则（如 `cnip`、`telegramip` 等）中均启用了 `,no-resolve` 标记。
 >
->* **隐私保护**：防止内核为了匹配 IP 规则而强制在本地解析被墙的域名，从>根源上杜绝了 DNS 污染与隐私泄漏风险。
+>* **隐私保护**：防止内核为了匹配 IP 规则而强制在本地解析被墙的域名，从根源上杜绝了 DNS 污染与隐私泄漏风险。
 >* **性能优化**：大幅减少无用的本地 DNS 查询，降低网络请求延迟。
 >
 >### 3. “国内白名单”式的策略兜底
 >
 >针对国内复杂的网络环境，本配置采用了更聪明的路由闭环：
 >
->* 优先通过 `cn` 和 `cnip` 规则将绝大多数国内已知网站、APP 及大陆 IP >剥离，确保**国内流量 100% 直连**，不占用代理带宽。
->* 尾部采用 `MATCH,🌀境外畅通` 进行防御性兜底。这意味着任何冷门、新出的>海外网站或小众服务，无需手动添加规则，均可自动走代理顺畅访问。
+>* 优先通过 `cn` 和 `cnip` 规则将绝大多数国内已知网站、APP 及大陆 IP 剥离，确保**国内流量 100% 直连**，不占用代理带宽。
+>* 尾部采用 `MATCH,🌀境外畅通` 进行防御性兜底。这意味着任何冷门、新出的海外网站或小众服务，无需手动添加规则，均可自动走代理顺畅访问。
 >
 >### 4. 针对特定域名的精细化调优
 >
@@ -97,12 +97,15 @@
 
 ## 📋 代理客户端推荐  
 
-| 平台 | 推荐客户端 | 备注 | 
-| :--- | :--- | :--- | 
-| **Windows** | [v2rayN](https://github.com/2dust/v2rayN), [FlClash](https://github.com/chen08209/FlClash), [mihomo-party](https://github.com/mihomo-party-org/mihomo-party), [Clash Verge Rev](https://github.com/ClashVerge/ClashVerge-Rev) | 全面支持 |
-| **Android** | [ClashMetaForAndroid](https://github.com/MetaCubeX/ClashMetaForAndroid), [FlClash](https://github.com/chen08209/FlClash), [v2rayNG](https://github.com/2dust/v2rayNG) | 建议使用 Meta 核心 |
-| **iOS** | [Surge](https://surgeapp.com/), [Shadowrocket](https://shadowrocket.com/), [Stash](https://stashapp.com/) | 完美适配 |
-| **MacOS** | [FlClash](https://github.com/chen08209/FlClash), [mihomo-party](https://github.com/mihomo-party-org/mihomo-party), [Clash Verge Rev](https://github.com/ClashVerge/ClashVerge-Rev), [Surge](https://surgeapp.com/) | M1/M2 完美兼容 |
+> <b>点击客户端名称可跳转至项目发布页下载</b>
+
+| 平台 | 推荐客户端 |
+| :--- | :--- |
+| **Windows** | [v2rayN](https://github.com/2dust/v2rayN/releases)、[Hiddify](https://github.com/hiddify/hiddify-app/releases)、[FlClash](https://github.com/chen08209/FlClash/releases)、[mihomo-party](https://github.com/mihomo-party-org/clash-party/releases)、[Clash Verge Rev](https://github.com/clash-verge-rev/clash-verge-rev/releases)、[Clashmi](https://github.com/KaringX/clashmi/releases)、[FlyClash](https://github.com/GtxFury/FlyClash/releases)、[Karing](https://github.com/KaringX/karing/releases)、[Bettbox](https://github.com/appshubcc/Bettbox/releases) |
+| **Android** | [v2rayNG](https://github.com/2dust/v2rayNG/releases)、[ClashMetaForAndroid](https://github.com/MetaCubeX/ClashMetaForAndroid/releases/)、[FlClash](https://github.com/chen08209/FlClash/releases)、[Clashmi](https://github.com/KaringX/clashmi/releases)、[Hiddify](https://github.com/hiddify/hiddify-app/releases)、[NekoBox](https://github.com/MatsuriDayo/NekoBoxForAndroid/releases)、[FlyClash](https://github.com/GtxFury/FlyClash/releases)、[Karing](https://github.com/KaringX/karing/releases)、[Bettbox](https://github.com/appshubcc/Bettbox/releases) |
+| **iOS** | Surge、Shadowrocket、Stash、[Hiddify](https://github.com/hiddify/hiddify-app/releases)、Loon、Egern、[Clashmi](https://clashmi.app/download)、[Karing](https://karing.app/)、Quantumult X |
+| **macOS** | [FlClash](https://github.com/chen08209/FlClash/releases)、[mihomo-party](https://github.com/mihomo-party-org/clash-party/releases)、[Clash Verge Rev](https://github.com/clash-verge-rev/clash-verge-rev/releases)、Surge、[Clashmi](https://clashmi.app/download)、[Karing](https://karing.app/)、[FlyClash](https://github.com/GtxFury/FlyClash/releases) |
+| **鸿蒙** | [ClashBox](https://github.com/xiaobaigroup/ClashBox/releases) |
 
 
 > [!TIP]
