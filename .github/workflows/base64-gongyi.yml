@@ -2,11 +2,11 @@ name: base64-gongyi-update
 
 on:
   schedule:
-    - cron: '0 */12 * * *'
+    - cron: '50 */6 * * *'
   workflow_dispatch: 
 
 jobs:
-  v2ray_update:
+  base64-gongyi-update:
     runs-on: ubuntu-latest
     permissions:
       contents: write # 必须开启写入权限，否则无法推送修改
@@ -17,7 +17,7 @@ jobs:
 
       - name: 获取并合并内容
         run: |
-          URL1="https://ghproxy.net/https://raw.githubusercontent.com/shaoyouvip/free/main/base64.txt"
+          URL1="https://raw.githubusercontent.com/shaoyouvip/free/main/base64.txt"
           URL2="https://share-main1c1m2.lancelot.dpdns.org/sub?token=f01050d65be928f27f8455ae15b1dfd8&b64"
           OUTPUT="src/base64-gongyi.txt"
 
