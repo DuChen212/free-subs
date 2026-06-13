@@ -76,7 +76,7 @@ text = (
     f'📢<a href="{NOTIFY_GROUP_URL}">TG讨论群</a>\n\n'
     f"🌀<b>版本：</b>{rel_name}\n"
     f"🍾<b>发布时间：</b>{pub_date}\n"
-    f'🔗<a href="{rel_url}">查看完整 Release</a>\n\n'
+    f'🔗<a href="{rel_url}">查看完整 Release 日志</a>\n\n'
     f"📦<b>下载 Assets：</b>\n{assets_text}"
 )
 
